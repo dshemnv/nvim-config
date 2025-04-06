@@ -1,3 +1,4 @@
+-- [[ Automatic indentation setup ]]
 return {
-	'tpope/vim-sleuth'
+  "tpope/vim-sleuth",
 }
