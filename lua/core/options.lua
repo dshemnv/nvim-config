@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-vim.g.python3_host_prog = "/home/dshem/.config/nvim/venv/bin/python"
+vim.g.python3_host_prog = "python3"
 
 vim.opt.number = true
 vim.opt.relativenumber = true
