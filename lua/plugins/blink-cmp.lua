@@ -36,10 +36,13 @@ return {
 
     completion = {
       -- (Default) Only show the documentation popup when manually triggered
-      documentation = { auto_show = false },
+      documentation = { auto_show = false, window = { border = "rounded" } },
       -- Shows a preview of the currently selected item
       ghost_text = { enabled = true },
     },
+
+    -- Shows function signature
+    signature = { enabled = true },
 
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
