@@ -48,6 +48,9 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
     lazygit = { enabled = true },
+    terminal = {
+      enabled = true,
+    },
   },
   keys = {
     -- Top Pickers & Explorer
@@ -332,6 +335,15 @@ return {
         Snacks.words.jump(-vim.v.count1)
       end,
       desc = "Prev Reference",
+      mode = { "n", "t" },
+    },
+    -- Terminal
+    {
+      "<leader>t",
+      function()
+        Snacks.terminal()
+      end,
+      desc = "Toggle terminal",
       mode = { "n", "t" },
     },
   },

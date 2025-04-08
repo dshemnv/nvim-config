@@ -44,3 +44,8 @@ vim.o.shiftwidth = 4 -- The number of spaces inserted for each indentation (defa
 vim.o.tabstop = 4 -- Insert n spaces for a tab (default: 8)
 vim.o.softtabstop = 4 -- Number of spaces that a tab counts for while performing editing operations (default: 0)
 vim.o.expandtab = true -- Convert tabs to spaces (default: false)`
+
+-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
+-- instead raise a dialog asking if you wish to save the current file(s)
+-- See `:help 'confirm'`
+vim.opt.confirm = true

@@ -5,7 +5,10 @@ return {
     "saghen/blink.cmp",
   },
   lazy = false,
+  ft = { "markdown", "quarto" },
   opts = {
-    yaml = { enable = true },
+    preview = {
+      icon_provider = "mini",
+    },
   },
 }
