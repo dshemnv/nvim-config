@@ -59,6 +59,13 @@ return {
       desc = "[S]earch [F]iles",
     },
     {
+      "<leader>bd",
+      function()
+        Snacks.bufdelete.delete()
+      end,
+      desc = "[B]uffer [d]elete",
+    },
+    {
       "<leader><space>",
       function()
         Snacks.picker.buffers()
