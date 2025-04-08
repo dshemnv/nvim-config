@@ -6,8 +6,6 @@ return {
   opts = {
     columns = {
       "icon",
-      "size",
-      "mtime",
     },
     delete_to_trash = true, -- Access trash with :Oil --trash
   },
