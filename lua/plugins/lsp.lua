@@ -8,10 +8,36 @@
 --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 --  - settings (table): Override the default settings passed when initializing the server.
 --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+local ruff_on_attach = function(client, bufnr)
+  if client.name == "ruff" then
+    client.server_capabilities.hoverProvider = false
+  end
+end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 local servers = {
   clangd = {},
-  pyright = {},
-  ruff = {},
+  pyright = {
+    capabilities = (function()
+      capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+      return capabilities
+    end)(),
+    settings = {
+      pyright = {
+        disableOrganizeImports = true,
+      },
+    },
+    python = {
+      analysis = {
+        ignore = { "*" },
+        typeCheckingMode = "off",
+        autoImportCompletions = false,
+      },
+    },
+  },
+  ruff = {
+    on_attach = ruff_on_attach,
+  },
   neocmake = {},
   bashls = {},
 
@@ -164,8 +190,7 @@ return {
     --  By default, Neovim doesn't support everything that is in the LSP specification.
     --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
     --  So, we create new capabilities with blink-cmp, and then broadcast that to the servers.
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+    capabilities = require("blink.cmp").get_lsp_capabilities()
 
     -- Ensure the servers and tools above are installed
     --
