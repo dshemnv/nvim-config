@@ -8,55 +8,6 @@
 --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 --  - settings (table): Override the default settings passed when initializing the server.
 --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-local ruff_on_attach = function(client, bufnr)
-  if client.name == "ruff" then
-    client.server_capabilities.hoverProvider = false
-  end
-end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-local servers = {
-  clangd = {},
-  pyright = {
-    capabilities = (function()
-      capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-      return capabilities
-    end)(),
-    settings = {
-      pyright = {
-        disableOrganizeImports = true,
-      },
-    },
-    python = {
-      analysis = {
-        ignore = { "*" },
-        typeCheckingMode = "off",
-        autoImportCompletions = false,
-      },
-    },
-  },
-  ruff = {
-    on_attach = ruff_on_attach,
-  },
-  neocmake = {},
-  bashls = {},
-
-  lua_ls = {
-    -- cmd = { ... },
-    -- filetypes = { ... },
-    -- capabilities = {},
-    settings = {
-      Lua = {
-        completion = {
-          callSnippet = "Replace",
-        },
-        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-        diagnostics = { disable = { "missing-fields" } },
-      },
-    },
-  },
-}
-
 return {
   -- Main LSP Configuration
   "neovim/nvim-lspconfig",
@@ -67,6 +18,7 @@ return {
     { "williamboman/mason.nvim", opts = {} },
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "saghen/blink.cmp",
 
     -- Useful status updates for LSP.
     { "j-hui/fidget.nvim", opts = {} },
@@ -158,15 +110,15 @@ return {
     vim.diagnostic.config({
       severity_sort = true,
       float = { border = "rounded", source = "if_many" },
-      underline = { severity = vim.diagnostic.severity.ERROR },
-      signs = vim.g.have_nerd_font and {
+      underline = { severity = vim.diagnostic.severity.WARN },
+      signs = {
         text = {
           [vim.diagnostic.severity.ERROR] = "󰅚 ",
           [vim.diagnostic.severity.WARN] = "󰀪 ",
           [vim.diagnostic.severity.INFO] = "󰋽 ",
           [vim.diagnostic.severity.HINT] = "󰌶 ",
         },
-      } or {},
+      },
       virtual_text = {
         source = "if_many",
         spacing = 2,
@@ -190,7 +142,56 @@ return {
     --  By default, Neovim doesn't support everything that is in the LSP specification.
     --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
     --  So, we create new capabilities with blink-cmp, and then broadcast that to the servers.
-    capabilities = require("blink.cmp").get_lsp_capabilities()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
+
+    local ruff_on_attach = function(client, bufnr)
+      if client.name == "ruff" then
+        client.server_capabilities.hoverProvider = false
+      end
+    end
+
+    local servers = {
+      clangd = {},
+      pyright = {
+        capabilities = (function()
+          capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+          return capabilities
+        end)(),
+        settings = {
+          pyright = {
+            disableOrganizeImports = true,
+          },
+        },
+        python = {
+          -- analysis = {
+          --   ignore = { "*" },
+          --   typeCheckingMode = "off",
+          --   autoImportCompletions = false,
+          -- },
+        },
+      },
+      ruff = {
+        on_attach = ruff_on_attach,
+      },
+      neocmake = {},
+      bashls = {},
+
+      lua_ls = {
+        -- cmd = { ... },
+        -- filetypes = { ... },
+        -- capabilities = {},
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = "Replace",
+            },
+            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+            diagnostics = { disable = { "missing-fields" } },
+          },
+        },
+      },
+    }
 
     -- Ensure the servers and tools above are installed
     --
