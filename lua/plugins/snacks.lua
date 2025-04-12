@@ -48,6 +48,7 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
     lazygit = { enabled = true },
+    terminal = { enabled = true },
   },
   keys = {
     -- Top Pickers & Explorer
@@ -317,6 +318,14 @@ return {
         Snacks.notifier.hide()
       end,
       desc = "Dismiss All Notifications",
+    },
+    {
+      "<C-_>",
+      function()
+        Snacks.terminal()
+      end,
+      desc = "Toggles the terminal",
+      mode = { "n", "t" },
     },
     {
       "]]",

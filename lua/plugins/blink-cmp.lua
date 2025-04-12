@@ -18,6 +18,12 @@ return {
           require("luasnip.loaders.from_vscode").lazy_load()
         end,
       },
+      -- Emoji completions, triggered on :
+      "moyiz/blink-emoji.nvim",
+      -- Reference completion in Quarto documents
+      "jmbuhr/cmp-pandoc-references",
+      -- Nerd fonts glyphs
+      "MahanRahmati/blink-nerdfont.nvim",
     },
 
     -- use a release tag to download pre-built binaries
@@ -66,7 +72,41 @@ return {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji", "nerdfont", "pandoc", "nerdfont" },
+        providers = {
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            score_offset = 100,
+            should_show_items = function()
+              return vim.tbl_contains({ "lua" }, vim.o.filetype)
+            end,
+          },
+          emoji = {
+            module = "blink-emoji",
+            name = "Emoji",
+            score_offset = 15, -- Tune by preference
+            opts = { insert = true }, -- Insert emoji (default) or complete its name
+            should_show_items = function()
+              return vim.tbl_contains(
+                -- Enable emoji completion only for git commits and markdown.
+                -- By default, enabled for all file-types.
+                { "gitcommit", "markdown", "quarto" },
+                vim.o.filetype
+              )
+            end,
+          },
+          pandoc = {
+            name = "pandoc_references",
+            module = "cmp-pandoc-references.blink",
+          },
+          nerdfont = {
+            module = "blink-nerdfont",
+            name = "Nerd Fonts",
+            score_offset = 15, -- Tune by preference
+            opts = { insert = true }, -- Insert nerdfont icon (default) or complete its name
+          },
+        },
       },
 
       -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
