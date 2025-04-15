@@ -12,6 +12,14 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+-- Brings back cursor to last position
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  desc = "return cursor to where it was last time closing the file",
+  group = vim.api.nvim_create_augroup("save-cursor-pos", { clear = true }),
+  pattern = "*",
+  command = 'silent! normal! g`"zv',
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then

@@ -56,6 +56,7 @@ return {
         Snacks.terminal("ipython", opts)
       end,
       desc = "Toggle ipython terminal",
+      ft = "quarto",
       mode = { "n", "t" },
     },
   },

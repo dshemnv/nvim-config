@@ -57,6 +57,13 @@ return {
     {
       "<leader>sf",
       function()
+        Snacks.picker.files({ cwd = vim.fn.expand("%:h") })
+      end,
+      desc = "[S]earch [F]iles",
+    },
+    {
+      "<leader>ss",
+      function()
         Snacks.picker.smart()
       end,
       desc = "[S]earch [F]iles",
@@ -133,6 +140,13 @@ return {
       desc = "[S]earch [R]ecent",
     },
     -- git
+    {
+      "<leader>gf",
+      function()
+        Snacks.picker.git_files()
+      end,
+      desc = "[S]earch [G]it [F]iles",
+    },
     -- { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
     -- { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
     -- { "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line" },
@@ -339,7 +353,7 @@ return {
     },
     -- Terminal
     {
-      "<leader>t",
+      "<C-_>",
       function()
         Snacks.terminal()
       end,

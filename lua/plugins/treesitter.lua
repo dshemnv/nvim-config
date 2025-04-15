@@ -19,6 +19,9 @@ return {
         "vimdoc",
         "python",
         "cmake",
+        "yaml",
+        "toml",
+        "verilog",
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

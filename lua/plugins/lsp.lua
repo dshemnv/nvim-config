@@ -176,6 +176,7 @@ return {
       },
       neocmake = {},
       bashls = {},
+      taplo = {},
 
       lua_ls = {
         -- cmd = { ... },
