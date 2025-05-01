@@ -37,5 +37,7 @@ return {
     require("mini.align").setup()
 
     require("mini.pairs").setup()
+    require("mini.git").setup()
+    require("mini.diff").setup()
   end,
 }
